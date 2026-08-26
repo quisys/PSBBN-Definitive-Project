@@ -169,6 +169,12 @@ elif [ -x "$(command -v emerge)" ]; then
 sys-fs/lvm2 lvm
 media-video/ffmpeg opus
 EOF
+# Swap deprecated exfat-utils with exfatprogs if present
+    if portageq has_version / sys-fs/exfat-utils &>/dev/null; then
+        echo "Removing deprecated sys-fs/exfat-utils to prevent package blocks..."
+        sudo emerge --deselect sys-fs/exfat-utils &>/dev/null
+        sudo emerge --unmerge --quiet sys-fs/exfat-utils
+    fi
     sudo emerge --sync && sudo USE='lvm' emerge -qa --quiet-fail --autounmask=y --autounmask-continue=y --autounmask-write=y -- net-misc/axel media-gfx/imagemagick dev-util/xxd dev-lang/python dev-python/pip sys-devel/bc net-misc/rsync net-misc/curl net-misc/wget media-video/ffmpeg sys-fs/lvm2 sys-fs/fuse sys-fs/dosfstools sys-fs/e2fsprogs sys-fs/exfatprogs sys-apps/util-linux sys-block/parted app-cdr/bchunk dev-libs/icu dev-util/pkgconf media-video/ffmpegthumbnailer app-arch/libarchive $i386 2>&1 | tee -a "${LOG_FILE}"
 elif [ -n "$IN_NIX_SHELL" ]; then
     echo Running in Nix environment - packages should be provided by flake and setup should not be run. >> "${LOG_FILE}"
