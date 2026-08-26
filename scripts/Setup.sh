@@ -167,6 +167,7 @@ elif [ -x "$(command -v emerge)" ]; then
     cat << 'EOF' | sudo tee /etc/portage/package.use/psbbn-installer > /dev/null
     # Specific USE requirements for PSBBN installer dependencies
 sys-fs/lvm2 lvm
+media-video/ffmpeg opus
 EOF
     sudo emerge --sync && sudo USE='lvm' emerge -qa --quiet-fail --autounmask=y --autounmask-continue=y --autounmask-write=y -- net-misc/axel media-gfx/imagemagick dev-util/xxd dev-lang/python dev-python/pip sys-devel/bc net-misc/rsync net-misc/curl net-misc/wget media-video/ffmpeg sys-fs/lvm2 sys-fs/fuse sys-fs/dosfstools sys-fs/e2fsprogs sys-fs/exfatprogs sys-apps/util-linux sys-block/parted app-cdr/bchunk dev-libs/icu dev-util/pkgconf media-video/ffmpegthumbnailer app-arch/libarchive $i386 2>&1 | tee -a "${LOG_FILE}"
 elif [ -n "$IN_NIX_SHELL" ]; then
