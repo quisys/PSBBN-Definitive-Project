@@ -357,52 +357,52 @@ copy_log() {
     fi
 }
 
-git_update() {
+#git_update() {
     # Check if the current directory is a Git repository
-    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-        echo "[X] Error: This script cannot continue due to an unsupported installation." >> "${LOG_FILE}"
-        error_msg "${UI_TEXT[ERROR_UNSUPPORTED_1]}" "${UI_TEXT[ERROR_UNSUPPORTED_2]}" "${UI_TEXT[ERROR_UNSUPPORTED_3]}" "${UI_TEXT[INSTALL_URL]}"
-    else
+    #if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        #echo "[X] Error: This script cannot continue due to an unsupported installation." >> "${LOG_FILE}"
+        #error_msg "${UI_TEXT[ERROR_UNSUPPORTED_1]}" "${UI_TEXT[ERROR_UNSUPPORTED_2]}" "${UI_TEXT[ERROR_UNSUPPORTED_3]}" "${UI_TEXT[INSTALL_URL]}"
+   # else
         # Fetch updates from the remote
-        git fetch >> "${LOG_FILE}" 2>&1
+        #git fetch >> "${LOG_FILE}" 2>&1
 
         # Check the current status of the repository
-        LOCAL=$(git rev-parse @)
-        REMOTE=$(git rev-parse @{u})
-        BASE=$(git merge-base @ @{u})
+        #LOCAL=$(git rev-parse @)
+        #REMOTE=$(git rev-parse @{u})
+        #BASE=$(git merge-base @ @{u})
 
-        if [ "$LOCAL" = "$REMOTE" ]; then
-            echo "No updates available — running the latest version." >> "${LOG_FILE}"
-        else
-            echo "Downloading updates..." >> "${LOG_FILE}"
-            echo "${UI_TEXT[UPDATE_GIT_1]}"
+        #if [ "$LOCAL" = "$REMOTE" ]; then
+            #echo "No updates available — running the latest version." >> "${LOG_FILE}"
+        #else
+            #echo "Downloading updates..." >> "${LOG_FILE}"
+            #echo "${UI_TEXT[UPDATE_GIT_1]}"
             # Get a list of files that have changed remotely
-            UPDATED_FILES=$(git diff --name-only "$LOCAL" "$REMOTE")
+            #UPDATED_FILES=$(git diff --name-only "$LOCAL" "$REMOTE")
 
-            if [ -n "$UPDATED_FILES" ]; then
-                echo "Files updated in the remote repository:" >> "${LOG_FILE}"
-                echo "${UI_TEXT[UPDATE_GIT_2]}"
-                echo "$UPDATED_FILES" | tee -a "${LOG_FILE}"
+            #if [ -n "$UPDATED_FILES" ]; then
+                #echo "Files updated in the remote repository:" >> "${LOG_FILE}"
+                #echo "${UI_TEXT[UPDATE_GIT_2]}"
+                #echo "$UPDATED_FILES" | tee -a "${LOG_FILE}"
 
                 # Reset only the files that were updated remotely (discard local changes to them)
-                echo "$UPDATED_FILES" | xargs git checkout -- >> "${LOG_FILE}" 2>&1
+                #echo "$UPDATED_FILES" | xargs git checkout -- >> "${LOG_FILE}" 2>&1
 
                 # Pull the latest changes
-                if ! git pull --ff-only >> "${LOG_FILE}" 2>&1; then
-                    echo "[X] Error: Git pull failed." >> "${LOG_FILE}"
-                    error_msg "${UI_TEXT[ERROR_GIT_1]}" "git clone https://github.com/CosmicScale/PSBBN-Definitive-Project.git" "${UI_TEXT[ERROR_GIT_2]}"
-                fi
-                echo
-                echo "[✓] The repository has been successfully updated." >> "${LOG_FILE}"
-                echo "[✓] ${UI_TEXT[UPDATE_GIT_3]}"
-                echo
-                read -n 1 -s -r -p "${UI_TEXT[UPDATE_GIT_4]}" </dev/tty
-                echo
-                exit 0
-            fi
-        fi
-    fi
-}
+                #if ! git pull --ff-only >> "${LOG_FILE}" 2>&1; then
+                    #echo "[X] Error: Git pull failed." >> "${LOG_FILE}"
+                    #error_msg "${UI_TEXT[ERROR_GIT_1]}" "git clone https://github.com/CosmicScale/PSBBN-Definitive-Project.git" "${UI_TEXT[ERROR_GIT_2]}"
+                #fi
+                #echo
+                #echo "[✓] The repository has been successfully updated." >> "${LOG_FILE}"
+              #  echo "[✓] ${UI_TEXT[UPDATE_GIT_3]}"
+               # echo
+                #read -n 1 -s -r -p "${UI_TEXT[UPDATE_GIT_4]}" </dev/tty
+                #echo
+                #exit 0
+          #  fi
+      #  fi
+   # fi
+#}
 
 check_required_files() {
     local missing=false
@@ -809,9 +809,9 @@ display_menu() {
 
 check_required_files
 
-if [ "$wsl" = "false" ]; then
-        git_update
-fi
+#if [ "$wsl" = "false" ]; then
+#        git_update
+#fi
 
 trap 'echo; exit 130' INT
 trap copy_log EXIT
@@ -957,7 +957,7 @@ else
     fi
 fi
 
-echo "UPDATE: $UPDATE" >> "$LOG_FILE"
+#echo "UPDATE: $UPDATE" >> "$LOG_FILE"
 
 if [ -f "${ASSETS_DIR}/lang/changelog_main_$LANG_FILE.txt" ]; then
     SPLASH
